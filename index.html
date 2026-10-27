@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Alvernia Campus Explorer | Flight Lab</title>
+<link rel="stylesheet" href="https://cesium.com/downloads/cesiumjs/releases/1.145/Build/Cesium/Widgets/widgets.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#" aria-label="Alvernia Campus Explorer home"><span class="brand-mark">A</span><span><strong>ALVERNIA</strong><small>CAMPUS EXPLORER</small></span></a>
+  <div class="top-meta"><span class="live-dot"></span> INTERACTIVE 3D TOUR <span class="meta-divider">/</span> READING, PA</div>
+</header>
+<main>
+  <section class="hero">
+    <div class="eyebrow">THE HILL CAMPUS · YOUR TOUR STARTS HERE</div>
+    <h1>Every building<br><em>has a story.</em></h1>
+    <p>Explore Alvernia University through an interactive 3D campus tour. Select a landmark to discover its role in the university’s history.</p>
+  </section>
+  <section class="workspace">
+    <aside class="sidebar">
+      <div class="panel-heading"><div><span class="eyebrow">EXPLORE</span><h2>Campus landmarks</h2></div><span id="landmarkCount" class="count">01 / 37</span></div>
+      <label class="search-wrap"><span>⌕</span><input id="search" type="search" placeholder="Find a building…" aria-label="Search campus landmarks"></label>
+      <div id="landmarkList" class="landmark-list" aria-label="Campus landmark list"></div>
+      <div class="sidebar-foot"><span class="live-dot"></span> <span>Landmark coordinates are approximate</span></div>
+    </aside>
+    <section class="map-panel" aria-label="Interactive 3D campus map">
+      <div class="map-topline"><span class="map-chip"><span class="live-dot"></span> 3D CAMPUS VIEW</span><span class="map-hint">Select a gold pin or a building name</span></div>
+      <div id="globe" aria-label="Interactive 3D view of Alvernia University campus">
+        <div class="center-reticle" aria-hidden="true"><span></span></div>
+      </div>
+      <div class="coordinate-tool">
+        <div class="coordinate-tool-copy"><strong>GET COORDINATES</strong><span>Aim the center dot at a visible rooftop or ground point, then capture.</span></div>
+        <button id="captureCoordinates" class="capture-button" type="button">Capture center point</button>
+        <div id="capturedCoordinates" class="captured-coordinates" aria-live="polite">No point captured yet</div>
+        <div class="edge-case-panel" aria-label="Coordinate capture edge case check">
+          <div><strong>EDGE CASE CHECK</strong><span>If the center dot points at sky or an area with no loaded 3D surface, capture must not invent coordinates.</span></div>
+          <button id="previewEdgeCase" class="edge-case-button" type="button">Preview edge case</button>
+          <p id="edgeCaseResult" class="edge-case-result" role="status" aria-live="polite">Not checked yet</p>
+        </div>
+      </div>
+      <div class="map-bottomline"><span>GOOGLE PHOTOREALISTIC 3D TILES</span><span>LOW-LOAD RENDERING</span></div>
+    </section>
+    <aside class="detail-panel">
+      <div class="detail-top"><span class="eyebrow">LANDMARK STORY</span><span class="story-icon">✳</span></div>
+      <div class="story-index">BUILDING <span id="landmarkCountMirror">01</span></div>
+      <h2 id="landmarkName">Francis Hall</h2>
+      <p id="landmarkHistory" class="history">The story of this landmark will appear here.</p>
+      <div class="coords-card"><div class="coords-title">GEOGRAPHIC COORDINATES <span>LAT / LON</span></div><div id="landmarkCoords" class="coords">40.321550, -75.934550</div><small>Approximate campus map pin — verify before using for navigation.</small></div>
+      <div class="tour-actions"><button id="previous" class="button-secondary">← Previous</button><button id="next" class="button-secondary">Next →</button></div>
+      <button id="flyTo" class="button-primary">Explore this building <span>↗</span></button>
+      <button id="guidedTour" class="button-outline">Start guided tour <span>▷</span></button>
+      <div class="detail-divider"></div>
+      <div class="control-heading"><span class="eyebrow">FLIGHT LAB CONTROLS</span><span class="control-note">SIMULATED</span></div>
+      <p id="message" class="status" role="status">Loading campus map…</p>
+      <div class="control-grid">
+        <label>Speed <span id="speedValue">70 m/s</span><input id="speed" type="range" min="0" max="250" value="70"></label>
+        <label>Height <span id="altitude">220 m</span><input id="height" type="range" min="50" max="5000" step="50" value="220"></label>
+      </div>
+      <div class="direction-row"><button id="left" aria-label="Turn left">↶ <small>LEFT 10°</small></button><button id="fly">▶ <small>FLY</small></button><button id="pause">Ⅱ <small>PAUSE</small></button><button id="right" aria-label="Turn right">↷ <small>RIGHT 10°</small></button></div>
+      <div class="readouts"><div><small>LATITUDE</small><strong id="latitude">40.321550</strong></div><div><small>LONGITUDE</small><strong id="longitude">-75.934550</strong></div><div><small>HEADING</small><strong id="headingValue">0°</strong></div></div>
+      <label class="toggle-row"><input id="follow" type="checkbox" checked> Follow camera while flying</label>
+      <button id="reset" class="reset-button">↺ Reset tour</button>
+    </aside>
+  </section>
+  <section class="history-note"><span class="note-icon">i</span><p><strong>About this tour</strong> The landmark list combines Alvernia’s Hill Campus buildings and a separate downtown CollegeTowne stop. Some buildings have short historical summaries based on university-published material; where detailed building history was not readily available, descriptions are intentionally brief. Individual building pins are approximate, not surveyed entrance coordinates.</p></section>
+</main>
+<footer><span>ALVERNIA UNIVERSITY · CAMPUS EXPLORER</span><span>Built with CesiumJS · Educational simulation, not a navigation tool</span></footer>
+<script src="https://cesium.com/downloads/cesiumjs/releases/1.145/Build/Cesium/Cesium.js"></script>
+<script src="config.js"></script><script src="landmarks.js"></script><script src="app.js"></script>
+<script>document.addEventListener('DOMContentLoaded',()=>{const count=document.getElementById('landmarkCount');const mirror=document.getElementById('landmarkCountMirror');const observer=new MutationObserver(()=>{if(count&&mirror)mirror.textContent=count.textContent.split('/')[0].trim();});if(count)observer.observe(count,{childList:true,subtree:true,characterData:true});if(count&&mirror)mirror.textContent=count.textContent.split('/')[0].trim();});</script>
+</body></html>

@@ -1,0 +1,46 @@
+ALVERNIA UNIVERSITY CAMPUS EXPLORER — PROJECT EVIDENCE
+
+1. NAMED AUDIENCE AND CLEAR NEED
+Audience: prospective students and first-time visitors to Alvernia University.
+Need: provide a simple interactive way to explore selected campus landmarks in 3D and read a short background summary before visiting.
+
+2. WORKING FEATURES
+Feature A — Campus-tour UI: campus-focused maroon-and-gold interface, searchable list of six stops, landmark story/coordinate panel, and previous/next controls.
+Feature B — Yellow center reticle and coordinate capture: aim the center dot at a visible 3D surface and capture latitude, longitude, and elevation when depth picking succeeds.
+Feature C — Guided tour and flight controls: map-pin selection, guided stop cycling, speed/height/heading controls, pause, reset, and camera-follow option.
+Feature D — Edge-case UI: “Preview edge case” shows the safe expected response when no 3D surface exists beneath the center dot.
+
+3. ISSUE AND PULL REQUEST TRACKING
+Improvement tracked: campus-tour UI plus yellow center reticle and coordinate-capture behavior.
+Suggested issue title: Campus tour UI and center-reticle coordinate capture.
+Issue scope: replace generic world-city navigation with six campus stops, show each stop's story, and handle coordinate-capture failure without inventing coordinates.
+Suggested pull request title: Add Alvernia campus tour UI, yellow reticle, and capture edge-case preview.
+Acceptance checks: six stops are available; choosing a stop updates the details; coordinate capture reports a picked surface only when one exists; the no-surface edge case is communicated clearly.
+Repository issue/PR IDs and URLs were not present in the provided project files. Insert the actual links after checking the repository; this note does not claim that GitHub records were created.
+
+4. RECORDED TESTS
+The project's existing movement test suite includes these seven checks:
+1) PASS — Pause preserves position.
+2) PASS — North movement increases latitude.
+3) PASS — East movement increases longitude.
+4) PASS — Heading wraps in both directions.
+5) PASS — Height limits clamp to allowed bounds.
+6) PASS — Zero speed keeps position.
+7) PASS — One second equals ten 0.1-second steps within the test tolerance.
+
+Edge case investigated: when the center dot points at sky, empty space, or an unloaded/unpickable tile, Cesium may not return a 3D position. Expected behavior: show “No 3D surface found at the center dot” and generate no coordinates. A new “Preview edge case” UI button displays this expected message for demonstration. This is a preview, not a live failure injection into Cesium.
+
+Verification for this revision: JavaScript syntax checks and ZIP integrity checks are run. Live map behavior depends on browser, network, a valid Cesium Ion token, and Google 3D Tiles access; live visual behavior was not verified in this editing environment.
+
+5. README AND KNOWN LIMITATIONS
+Run locally: extract the folder, configure a valid token in config.js, run `python -m http.server 8000` from the project directory, and open http://localhost:8000. Internet access and Google Photorealistic 3D Tiles access are required. Do not publish a private token in a public repository; a token shipped to the browser is visible to users.
+
+Known limitations: Plex and Student Center coordinates are unverified estimates; pins are not navigation-grade; tile detail and loading depend on internet/service/hardware; center-point picking can fail if no surface is visible; captured points are not automatically saved; movement is a simplified simulation without aerodynamics, collision detection, or terrain avoidance; history summaries are brief and need independent fact-checking.
+
+6. AI USE NOTE
+Tool: ChatGPT (OpenAI).
+Purpose: assist with code changes and documentation for a CesiumJS campus tour, including the campus UI, yellow center reticle, coordinate capture, and an edge-case message.
+Representative prompts: “rewrite the flight lab to be a campus tour of Alvernia University”; “make the map camera target the center of the canvas”; “add a yellow center dot for capturing coordinates”; “add a UI element that shows the edge case.”
+Student changes: review and revise generated code, verify building histories and coordinates against official sources, configure a personal Cesium Ion token, test the site locally, and create/link the actual repository issue and pull request. The four coordinates supplied by the project owner were preserved; Plex and Student Center remain estimates.
+Verification: existing automated movement tests cover pause, direction movement, heading wrap, height limits, zero speed, and duration consistency; this revision is checked for JavaScript syntax and ZIP integrity. Live Cesium rendering still needs manual browser verification with working service access.
+Limitations: AI output may be wrong and must be reviewed; history and coordinates need independent validation; the edge-case UI button previews the expected message rather than forcing the real Cesium picker to fail; browser-side Cesium tokens are visible.

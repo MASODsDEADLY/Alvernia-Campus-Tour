@@ -1,6 +1,6 @@
 # Project Evidence — Alvernia University Campus Explorer
 
-**Student name:** [Enter your name before submission]  
+**Student name:** Ismael
 **Project:** Alvernia University Campus Explorer  
 **Audience:** prospective students and first-time visitors to Alvernia University.  
 **Need addressed:** provide an interactive way to explore selected campus landmarks in 3D and read short landmark summaries before visiting.
